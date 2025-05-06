@@ -1,0 +1,10 @@
+.nav{
+  background-color: rebeccapurple;
+}
+
+/* to apply style globally, i.e. for all the classes with that name globally */
+/* global is very important when working with classes provide from external sources. */
+
+:global(.test){
+  background-color: red;
+}
