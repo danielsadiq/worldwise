@@ -1,4 +1,4 @@
-import styles from "./Form.module.css"
+import styles from "./Footer.module.css"
 function Footer() {
   return (
     <footer className={styles.footer}>
