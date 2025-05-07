@@ -1,3 +1,4 @@
+import { useCities } from "../contexts/CitiesContext";
 import CityItem from "./CityItem";
 import styles from "./CityList.module.css";
 import Message from "./Message";
@@ -13,13 +14,14 @@ export type CityType = {
     lat: number;
     lng: number;
   };
-  id: number;
+  id: string;
 };
-type CityListType = {
-  cities: CityType[];
-  isLoading: boolean;
-};
-function CityList({ cities, isLoading }: CityListType) {
+// type CityListType = {
+//   cities: CityType[];
+//   isLoading: boolean;
+// };
+function CityList() {
+  const {cities, isLoading} = useCities();
   if (isLoading) return <Spinner />;
   if (!cities.length) return <Message message="Add your first coty by clicking on a city on the map"/>
   return (

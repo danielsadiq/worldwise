@@ -1,3 +1,4 @@
+import { useCities } from "../contexts/CitiesContext";
 import CountryItem from "./CountryItem";
 import styles from "./CountryList.module.css";
 import Message from "./Message";
@@ -15,12 +16,13 @@ export type CityType = {
   };
   id: number;
 };
-type CountryListType = {
-  cities: CityType[];
-  isLoading: boolean;
-};
-function CountryList({ cities, isLoading }: CountryListType) {
+// type CountryListType = {
+//   cities: CityType[];
+//   isLoading: boolean;
+// };
+function CountryList() {
   const countries: CityType[] = [];
+  const {cities, isLoading} = useCities();
   cities.map((x) =>countries.map(el => el.country).includes(x.country) ? null : countries.push(x));
 
   if (isLoading) return <Spinner />;

@@ -1,7 +1,7 @@
 import styles from './Button.module.css'
 type ButtonType = {
   children: React.ReactNode,
-  onClick: () => void,
+  onClick: (e) => void,
   type: string
 }
 function Button({children, onClick, type}:ButtonType) {
