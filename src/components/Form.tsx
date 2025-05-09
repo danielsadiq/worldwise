@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Message from "./Message";
 import Spinner from "./Spinner";
 import { useNavigate } from "react-router-dom";
-import { useCities } from "../contexts/useCities";
+import { useCities } from "../contexts/CitiesContext";
 
 
 function convertToEmoji(countryCode: string): string {

@@ -1,7 +1,7 @@
 import type { CityType } from "../types/cityType";
 import styles from './CityItem.module.css'
 import { Link, useNavigate } from "react-router-dom";
-import { useCities } from "../contexts/useCities";
+import { useCities } from "../contexts/CitiesContext";
 const formatDate = (date:string|Date) =>
   new Intl.DateTimeFormat("en", {
     day: "numeric",
