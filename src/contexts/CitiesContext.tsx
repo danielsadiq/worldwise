@@ -39,15 +39,26 @@ type StateType = {
   currentCity: CurrentCityType[];
   error: string;
 };
+type Action =
+  | { type: 'loading' }
+  | { type: 'cities/loaded'; payload: CityType[] }
+  | { type: 'city/created'; payload: CityType }
+  | { type: 'rejected'; payload: string }
+  | { type: 'city/loaded'; payload: CurrentCityType }
+  | { type: 'city/deleted'; payload: number };
 
-function reducer(state: StateType, action) {
+function reducer(state: StateType, action:Action) {
   switch (action.type) {
     case "loading":
       return { ...state, isLoading: true };
     case "cities/loaded":
       return { ...state, isLoading: false, cities: action.payload };
     case "city/created":
-      return { ...state, cities: [...state.cities, action.payload] };
+      return {
+        ...state,
+        cities: [...state.cities, action.payload],
+        currentCity: action.payload,
+      };
     case "rejected":
       return { ...state, isLoading: false, error: action.payload };
     case "city/loaded":
@@ -58,11 +69,11 @@ function reducer(state: StateType, action) {
         ...state,
         isLoading: false,
         cities: state.cities.filter((city) => city.id !== action.payload),
+        currentCity: action.payload,
       };
     default:
       throw new Error("Unknown action type");
   }
-  throw Error("Unknown action: " + action.type);
 }
 
 function CitiesProvider({ children }: { children: React.ReactNode }) {
@@ -70,16 +81,6 @@ function CitiesProvider({ children }: { children: React.ReactNode }) {
     reducer,
     initialState
   );
-
-  // const [cities, setCities] = useState<CityType[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [currentCity, setCurrentCity] = useState<CurrentCityType>({
-  //   id: 0,
-  //   cityName: "",
-  //   emoji: "",
-  //   date: 0,
-  //   notes: "",
-  // });
 
   useEffect(function () {
     async function fetchCities() {
@@ -100,8 +101,10 @@ function CitiesProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function getCity(id: number) {
+    if (Number(id) === currentCity.id) return
+    dispatch({ type: "loading" });
+
     try {
-      dispatch({ type: "loading" });
       const req = await fetch(`${BASE_URL}/cities/${id}`);
       const data = await req.json();
       dispatch({ type: "city/loaded", payload: data });
@@ -137,7 +140,6 @@ function CitiesProvider({ children }: { children: React.ReactNode }) {
   async function deleteCity(id: number) {
     dispatch({ type: "loading" });
     try {
-      // setIsLoading(true);
       await fetch(`http://localhost:9000/cities/${id}`, {
         method: "DELETE",
         headers: {
