@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useParams } from "react-router-dom";
-import { useCities } from "../contexts/CitiesContext";
+import { useCities } from "../contexts/useCities";
 import { useEffect } from "react";
 import styles from "./City.module.css";
 import Spinner from "./Spinner";
@@ -21,7 +21,7 @@ function City() {
 
   useEffect(
     function () {
-      getCity(id);
+      getCity(Number(id));
     },
     [id]
   );

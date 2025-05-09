@@ -11,7 +11,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import Message from "./Message";
 import Spinner from "./Spinner";
 import { useNavigate } from "react-router-dom";
-import { useCities } from "../contexts/CitiesContext";
+import { useCities } from "../contexts/useCities";
+
 
 function convertToEmoji(countryCode: string): string {
   const codePoints = countryCode
@@ -29,7 +30,7 @@ function Form() {
   const {createCity, isLoading} = useCities();
   const [cityName, setCityName] = useState("");
   const [country, setCountry] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState<Date | null>(null);
   const [notes, setNotes] = useState("");
   const [isLoadinGeocoding, setIsLoadinGeocoding] = useState(false);
   const [geocodingError, setGeocodingError] = useState("");

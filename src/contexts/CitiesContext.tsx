@@ -1,34 +1,39 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import type { CityType } from "../components/CityList";
+
 import { BASE_URL } from "../utils/baseUrl";
+import type { CityType } from "../types/cityType";
 type CitiesContextType = {
   cities: CityType[];
   isLoading: boolean;
   currentCity: CurrentCityType;
-  getCity: (id: string) => void;
-  createCity: (newCity:CityType) => void;
+  getCity: (id: number) => void;
+  createCity: (newCity: CityType) => void;
+  deleteCity: (id: number) => void;
 };
 
 const CitiesContext = createContext<CitiesContextType>({
   cities: [],
   isLoading: false,
   currentCity: {
-    id: "",
+    id: 0,
     cityName: "",
     emoji: "",
     date: 0,
     notes: "",
   },
-  getCity: function (id: string): void {
+  getCity: function (id: number): void {
     throw new Error(`Function not implemented.${id}`);
   },
-  createCity: function (newCity:CityType): void {
+  createCity: function (newCity: CityType): void {
     throw new Error(`Function not implemented.${newCity.cityName}`);
-  }
+  },
+  deleteCity: function (id: number): void {
+    throw new Error(`Function not implemented.${id}`);
+  },
 });
 
 type CurrentCityType = {
-  id: string;
+  id: number;
   cityName: string;
   emoji: string;
   date: number;
@@ -36,10 +41,10 @@ type CurrentCityType = {
 };
 
 function CitiesProvider({ children }: { children: React.ReactNode }) {
-  const [cities, setCities] = useState([]);
+  const [cities, setCities] = useState<CityType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentCity, setCurrentCity] = useState<CurrentCityType>({
-    id: "",
+    id: 0,
     cityName: "",
     emoji: "",
     date: 0,
@@ -62,7 +67,7 @@ function CitiesProvider({ children }: { children: React.ReactNode }) {
     fetchCities();
   }, []);
 
-  async function getCity(id: string) {
+  async function getCity(id: number) {
     try {
       setIsLoading(true);
       const req = await fetch(`${BASE_URL}/cities/${id}`);
@@ -75,7 +80,7 @@ function CitiesProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function createCity(newCity:CityType) {
+  async function createCity(newCity: CityType) {
     setIsLoading(true);
     fetch("http://localhost:9000/cities", {
       method: "POST",
@@ -87,19 +92,44 @@ function CitiesProvider({ children }: { children: React.ReactNode }) {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
-        setCities(cities => [...cities, newCity]);
+        setCities((cities) => [...cities, newCity]);
+        setIsLoading(false);
         // Update the local array or display a success message
       })
       .catch((error) => {
         console.error("Error:", error);
-        // Display an error message
-      }).finally{
         setIsLoading(false);
-      }
+        // Display an error message
+      });
+  }
+  async function deleteCity(id: number) {
+    try {
+      setIsLoading(true);
+      await fetch(`http://localhost:9000/cities/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setCities((cities) => cities.filter((x) => x.id !== id));
+    } catch  {
+      alert("There was an error deleting the city.")
+    } finally{
+      setIsLoading(false);
+    }
   }
 
   return (
-    <CitiesContext.Provider value={{ cities, isLoading, currentCity, getCity, createCity }}>
+    <CitiesContext.Provider
+      value={{
+        cities,
+        isLoading,
+        currentCity,
+        getCity,
+        createCity,
+        deleteCity,
+      }}
+    >
       {children}
     </CitiesContext.Provider>
   );

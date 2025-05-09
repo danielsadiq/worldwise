@@ -37,30 +37,6 @@
       "id": 98443197
     },
     {
-      "cityName": "Oslo",
-      "country": "Norway",
-      "emoji": "🇳🇴",
-      "date": "2025-05-08T18:00:59.753Z",
-      "notes": "Cool place, magnus carlsen",
-      "id": 1746727272934,
-      "position": {
-        "lat": 59.97853712179878,
-        "lng": 10.756871676230078
-      }
-    },
-    {
-      "cityName": "Rome",
-      "country": "Italy",
-      "emoji": "🇮🇹",
-      "date": "2025-05-09T07:49:31.098Z",
-      "notes": "Cool place, vatican city",
-      "id": 1746777006679,
-      "position": {
-        "lat": 41.9030541088336,
-        "lng": 12.478796425797364
-      }
-    },
-    {
       "cityName": "Monaco",
       "country": "Monaco",
       "emoji": "🇲🇨",

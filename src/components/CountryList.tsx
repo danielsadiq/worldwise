@@ -1,21 +1,11 @@
-import { useCities } from "../contexts/CitiesContext";
+import { useCities } from "../contexts/useCities";
+import type { CityType } from "../types/cityType";
 import CountryItem from "./CountryItem";
 import styles from "./CountryList.module.css";
 import Message from "./Message";
 import Spinner from "./Spinner";
 
-export type CityType = {
-  cityName: string;
-  country: string;
-  emoji: string;
-  date: string;
-  notes: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
-  id: number;
-};
+
 // type CountryListType = {
 //   cities: CityType[];
 //   isLoading: boolean;
