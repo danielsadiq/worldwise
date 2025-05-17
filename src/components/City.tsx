@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useParams } from "react-router-dom";
 import { useCities } from "../contexts/CitiesContext";
 import { useEffect } from "react";
@@ -6,7 +5,7 @@ import styles from "./City.module.css";
 import Spinner from "./Spinner";
 import BackButton from "./BackButton";
 
-const formatDate = (date: string) =>
+const formatDate = (date: string|null) =>
   new Intl.DateTimeFormat("en", {
     day: "numeric",
     month: "long",
@@ -14,6 +13,7 @@ const formatDate = (date: string) =>
     weekday: "long",
   }).format(new Date(date));
 
+  
 function City() {
   // TEMP DATA
   const { id } = useParams();

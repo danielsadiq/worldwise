@@ -8,7 +8,7 @@ const FAKE_USER = {
 };
 const initialState = { user: null, isAuthenticated: false };
 type UserType = {
-  user:string,
+  name:string,
   email:string,
   password:string,
   avatar:string,
@@ -18,8 +18,11 @@ type StateType = {
   user:UserType|null,
   isAuthenticated:boolean
 }
+type ActionType =
+  | { type: "login"; payload: UserType } // Adjust the type of 'payload' as needed
+  | { type: "logout" };
 
-function reducer(state:StateType, action) {
+function reducer(state:StateType, action:ActionType) {
   switch (action.type) {
     case "login":
       return { ...state, user: action.payload, isAuthenticated: true };
@@ -30,7 +33,10 @@ function reducer(state:StateType, action) {
   }
 }
 
-const AuthContext = createContext();
+const AuthContext = createContext({
+  user: {name:"", email:"", password:"", avatar:""},
+  isAuthenticated:false
+});
 function AuthProvider({ children }: { children: React.ReactElement }) {
   const [{ user, isAuthenticated }, dispatch] = useReducer(
     reducer,
